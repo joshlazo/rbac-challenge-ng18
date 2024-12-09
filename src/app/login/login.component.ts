@@ -29,6 +29,11 @@ export class LoginComponent implements OnInit {
 
   isLoading: boolean = false;
 
+  convenienceCreds = {
+    email: 'eve.holt@reqres.in',
+    pass: 'thiscanbeanything',
+  }
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -38,8 +43,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: [this.convenienceCreds.email, [Validators.required, Validators.email]],
+      password: [this.convenienceCreds.pass, Validators.required],
       isAdmin: [false],
     })
   }
