@@ -1,0 +1,10 @@
+<div class="flex flex-col h-screen">
+  <nav class="bg-gray-800 text-white p-4 flex gap-4">
+    <button (click)="logout()" class="ml-auto px-4 py-2 bg-red-500 rounded hover:bg-red-400">
+      Logout
+    </button>
+  </nav>
+  <main class="flex-1 bg-gray-100 p-6 overflow-y-auto">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,130 @@
+<ng-template [ngIf]="resources$ | async" let-value="ngIf">
+    <div class="mb-4">
+        <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" (click)="toggleAddForm()">
+            Add Resource
+        </button>
+        <div *ngIf="isAddFormVisible" class="mt-4 p-4 bg-gray-100 rounded border border-gray-300">
+            <h2 class="text-xl font-semibold mb-4 text-gray-700">Add New Resource</h2>
+            <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <label for="id" class="block text-gray-600">ID</label>
+                        <input id="id" type="text" formControlName="id" class="w-full px-2 py-1 border rounded" />
+                    </div>
+                    <div *ngIf="resourceForm.get('id')?.touched && resourceForm.get('id')?.invalid">
+                        <small class="text-red-600 text-sm" *ngIf="resourceForm.get('id')?.errors?.['required']">
+                            ID is required.
+                        </small>
+                    </div>
+                    <div>
+                        <label for="name" class="block text-gray-600">Name</label>
+                        <input id="name" type="text" formControlName="name" class="w-full px-2 py-1 border rounded" />
+                    </div>
+                    <div *ngIf="resourceForm.get('name')?.touched && resourceForm.get('name')?.invalid">
+                        <small class="text-red-600 text-sm" *ngIf="resourceForm.get('name')?.errors?.['required']">
+                            Name is required.
+                        </small>
+                    </div>
+                    <div>
+                        <label for="year" class="block text-gray-600">Year</label>
+                        <input id="year" type="text" formControlName="year" class="w-full px-2 py-1 border rounded" />
+                    </div>
+                    <div *ngIf="resourceForm.get('year')?.touched && resourceForm.get('year')?.invalid">
+                        <small class="text-red-600 text-sm" *ngIf="resourceForm.get('year')?.errors?.['required']">
+                            Year is required.
+                        </small>
+                        <small class="text-red-600 text-sm" *ngIf="resourceForm.get('year')?.errors?.['pattern']">
+                            Year must be a number value.
+                        </small>
+                    </div>
+                    <div>
+                        <label for="color" class="block text-gray-600">Color:</label>
+                        <input id="color" type="text" formControlName="color" class="w-full px-2 py-1 border rounded" />
+                    </div>
+                    <div *ngIf="resourceForm.get('color')?.touched && resourceForm.get('color')?.invalid">
+                        <small class="text-red-600 text-sm" *ngIf="resourceForm.get('color')?.errors?.['required']">
+                            Color is required.
+                        </small>
+                        <small class="text-red-600 text-sm" *ngIf="resourceForm.get('color')?.errors?.['pattern']">
+                            Must be hexadecimal color code format.
+                        </small>
+                    </div>
+                    <div>
+                        <label for="pantone_value" class="block text-gray-600">Value:</label>
+                        <input id="pantone_value" type="text" formControlName="pantone_value"
+                            class="w-full px-2 py-1 border rounded" />
+                    </div>
+                    <div *ngIf="resourceForm.get('pantone_value')?.touched && resourceForm.get('pantone_value')?.invalid">
+                        <small class="text-red-600 text-sm" *ngIf="resourceForm.get('pantone_value')?.errors?.['required']">
+                            Pantone Value is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="mt-4 text-right">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2">
+                        Submit
+                    </button>
+                    <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="toggleAddForm()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <table class="table-auto border-collapse border border-gray-400 w-full">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="border border-gray-400 px-4 py-2">ID</th>
+                <th class="border border-gray-400 px-4 py-2">Name</th>
+                <th class="border border-gray-400 px-4 py-2">Year</th>
+                <th class="border border-gray-400 px-4 py-2">Color</th>
+                <th class="border border-gray-400 px-4 py-2">Value</th>
+                <th class="border border-gray-400 px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of value.data; track $index) {
+            <tr class="odd:bg-gray-100 even:bg-gray-50">
+                <td class="border border-gray-400 px-4 py-2 text-center">{{ item.id }}</td>
+                <td class="border border-gray-400 px-4 py-2">{{ item.name | titlecase }}</td>
+                <td class="border border-gray-400 px-4 py-2">{{ item.year }}</td>
+                <td class="border border-gray-400 px-4 py-2" [style.backgroundColor]="item.color"></td>
+                <td class="border border-gray-400 px-4 py-2">{{ item.pantone_value }}</td>
+                <td class="border border-gray-400 px-4 py-2 text-center">
+                    <button class="bg-blue-500 text-white px-2 mr-2 py-1 rounded hover:bg-blue-600"
+                        (click)="onEditClick(item)">
+                        Edit
+                    </button>
+                    <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                        (click)="deleteResource(item.id)">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            <ng-template [ngIf]="selectedItemId === item.id">
+                <tr>
+                    <td colspan="6">
+                        <cp-resource-management [details]="item" (panelClosed)="switchToZero($event)"></cp-resource-management>
+
+                    </td>
+                </tr>
+            </ng-template>
+            }
+        </tbody>
+        <tfoot class="bg-gray-200">
+            <tr>
+                <td colspan="6" class="border border-gray-400 text-center py-2">
+                    <button (click)="switchPage(value.page - 1)" [disabled]="value.page === 1"
+                        class="px-4 py-2 bg-gray-300 text-gray-600 hover:bg-gray-400 disabled:bg-gray-200 disabled:text-gray-400 rounded">
+                        Previous
+                    </button>
+                    <span class="px-4 py-2">{{ value.page }} / {{ value.total_pages }}</span>
+                    <button (click)="switchPage(value.page + 1)" [disabled]="value.page === value.total_pages"
+                        class="px-4 py-2 bg-gray-300 text-gray-600 hover:bg-gray-400 disabled:bg-gray-200 disabled:text-gray-400 rounded">
+                        Next
+                    </button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</ng-template>

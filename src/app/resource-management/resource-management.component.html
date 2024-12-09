@@ -1,0 +1,52 @@
+<form [formGroup]="resourceForm" (ngSubmit)="onSubmit()" class="p-4 bg-gray-100 rounded">
+    <h2 class="text-xl font-semibold mb-4 text-gray-700">Edit Resource</h2>
+    <div class="grid grid-cols-1 gap-4">
+        <div>
+            <label for="name" class="block text-gray-600 mb-1">Name</label>
+            <input id="name" type="text" formControlName="name" class="w-full px-2 py-1 border rounded">
+        </div>
+        <div *ngIf="resourceForm.get('name')?.touched && resourceForm.get('name')?.invalid">
+            <small class="text-red-600 text-sm" *ngIf="resourceForm.get('name')?.errors?.['required']">
+                Name is required.
+            </small>
+        </div>
+        <div>
+            <label for="year" class="block text-gray-600 mb-1">Year</label>
+            <input id="year" type="text" formControlName="year" class="w-full px-2 py-1 border rounded">
+        </div>
+        <div *ngIf="resourceForm.get('year')?.touched && resourceForm.get('year')?.invalid">
+            <small class="text-red-600 text-sm" *ngIf="resourceForm.get('year')?.errors?.['required']">
+                Year is required.
+            </small>
+            <small class="text-red-600 text-sm" *ngIf="resourceForm.get('year')?.errors?.['pattern']">
+                Year must be a number value.
+            </small>
+        </div>
+        <div>
+            <label for="color" class="block text-gray-600 mb-1">Color</label>
+            <input id="color" type="text" formControlName="color" class="w-full px-2 py-1 border rounded">
+        </div>
+        <div *ngIf="resourceForm.get('color')?.touched && resourceForm.get('color')?.invalid">
+            <small class="text-red-600 text-sm" *ngIf="resourceForm.get('color')?.errors?.['required']">
+                Color is required.
+            </small>
+            <small class="text-red-600 text-sm" *ngIf="resourceForm.get('color')?.errors?.['pattern']">
+                Must be hexadecimal color code format.
+            </small>
+        </div>
+        <div>
+            <label for="pantone_value" class="block text-gray-600 mb-1">Value</label>
+            <input id="pantone_value" type="text" formControlName="pantone_value" class="w-full px-2 py-1 border rounded">
+        </div>
+        <div *ngIf="resourceForm.get('pantone_value')?.touched && resourceForm.get('pantone_value')?.invalid">
+            <small class="text-red-600 text-sm" *ngIf="resourceForm.get('pantone_value')?.errors?.['required']">
+                Pantone Value is required.
+            </small>
+        </div>
+    </div>
+    <div class="mt-4 text-right">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Submit
+        </button>
+    </div>
+</form>

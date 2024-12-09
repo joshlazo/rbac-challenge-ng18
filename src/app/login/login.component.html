@@ -1,0 +1,53 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-700">
+    <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+            <h2 class="text-2xl font-semibold text-gray-700 text-center">Lorem Ipsum</h2>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+                <input id="email" type="email" formControlName="email"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+                <small class="text-red-600 text-sm" *ngIf="loginForm.get('email')?.errors?.['required']">
+                    Email is required.
+                </small>
+                <small class="text-red-600 text-sm" *ngIf="loginForm.get('email')?.errors?.['email']">
+                    Invalid email format.
+                </small>
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+                <div class="flex items-center w-full">
+                    <input #password id="password" type="password" formControlName="password"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    <button type="button"
+                        class="text-gray-500 hover:text-gray-700 flex items-center justify-center px-2"
+                        (click)="showPassword(password)">
+                        <mat-icon
+                            [fontIcon]="password.type === 'password' ? 'visibility_off' : 'visibility'"></mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                <small class="text-red-600 text-sm" *ngIf="loginForm.get('password')?.errors?.['required']">
+                    Password is required.
+                </small>
+            </div>
+            <div class="flex items-center space-x-2">
+                <input id="isAdmin" type="checkbox" formControlName="isAdmin"
+                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                <label for="isAdmin" class="text-sm text-gray-600">Simulate as admin?</label>
+            </div>
+            <button *ngIf="!isLoading" type="submit"
+                class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Login
+            </button>
+            <div *ngIf="isLoading" class="w-full flex justify-center items-center p-4">
+                <mat-spinner [diameter]="24"></mat-spinner>
+            </div>
+            <div *ngIf="error" class="text-red-600 text-sm text-center">
+                {{ error | error}}
+            </div>
+        </form>
+    </div>
+</div>

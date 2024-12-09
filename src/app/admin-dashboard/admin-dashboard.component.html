@@ -1,0 +1,48 @@
+<ng-template [ngIf]="users$ | async" let-value="ngIf">
+    <table class="table-auto border-collapse border border-gray-400 w-full">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="border border-gray-400 px-4 py-2">ID</th>
+                <th class="border border-gray-400 px-4 py-2">Last Name</th>
+                <th class="border border-gray-400 px-4 py-2">First Name</th>
+                <th class="border border-gray-400 px-4 py-2">Email</th>
+                <th class="border border-gray-400 px-4 py-2">Avatar</th>
+                <th class="border border-gray-400 px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of value.data; track $index) {
+            <tr class="odd:bg-gray-100 even:bg-gray-50">
+                <td class="border border-gray-400 px-4 py-2 text-center">{{ item.id }}</td>
+                <td class="border border-gray-400 px-4 py-2">{{ item.last_name }}</td>
+                <td class="border border-gray-400 px-4 py-2">{{ item.first_name }}</td>
+                <td class="border border-gray-400 px-4 py-2">{{ item.email }}</td>
+                <td class="border border-gray-400 px-4 py-2 text-center">
+                    <img [src]="item.avatar" alt="{{ item.first_name }}" class="h-10 w-10 rounded-full mx-auto" />
+                </td>
+                <td class="border border-gray-400 px-4 py-2 text-center">
+                    <button class="bg-gray-400 text-white px-2 py-1 rounded hover:bg-gray-500"
+                        (click)="navigateToDetails(item.id)" (click)="navigateToDetails(item.id)">
+                        Details
+                    </button>
+                </td>
+            </tr>
+            }
+        </tbody>
+        <tfoot class="bg-gray-200">
+            <tr>
+                <td colspan="6" class="border border-gray-400 text-center py-2">
+                    <button (click)="switchPage(value.page - 1)" [disabled]="value.page === 1"
+                        class="px-4 py-2 bg-gray-300 text-gray-600 hover:bg-gray-400 disabled:bg-gray-200 disabled:text-gray-400 rounded">
+                        Previous
+                    </button>
+                    <span class="px-4 py-2">{{ value.page }} / {{ value.total_pages }}</span>
+                    <button (click)="switchPage(value.page + 1)" [disabled]="value.page === value.total_pages"
+                        class="px-4 py-2 bg-gray-300 text-gray-600 hover:bg-gray-400 disabled:bg-gray-200 disabled:text-gray-400 rounded">
+                        Next
+                    </button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</ng-template>

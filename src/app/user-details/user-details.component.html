@@ -1,0 +1,43 @@
+<div class="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg space-y-4">
+    <div class="flex justify-between items-center">
+        <button (click)="goBack()"
+            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Back
+        </button>
+    </div>
+    <div *ngIf="(user$ | async) as data; else spinner">
+        <div *ngIf="data?.data as user; else errorTemplate">
+            <div class="flex items-center gap-6 border-b border-gray-300 pb-4">
+                <img [src]="user.avatar" [alt]="user.first_name + ' ' + user.last_name"
+                    class="h-24 w-24 rounded-full border border-gray-300 shadow-md" />
+                <h2 class="text-2xl font-bold text-gray-800">
+                    {{ user.last_name }}, {{ user.first_name }}
+                </h2>
+            </div>
+            <div class="pt-4">
+                <p class="text-lg text-gray-600">
+                    <span>ID: </span> <span class="text-gray-800">{{ user.id }}</span>
+                </p>
+                <p class="text-lg text-gray-600">
+                    <span>Email: </span> <span class="text-gray-800">{{ user.email }}</span>
+                </p>
+            </div>
+            <div class="pt-6 flex justify-end">
+                <button (click)="deleteUser(user.id)"
+                    class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    Delete User
+                </button>
+            </div>
+        </div>
+    </div>
+    <ng-template #spinner>
+        <div class="w-full flex justify-center items-center p-4">
+            <mat-spinner [diameter]="24"></mat-spinner>
+        </div>
+    </ng-template>
+    <ng-template #errorTemplate>
+        <div class="flex justify-center items-center text-red-600">
+            User not found.
+        </div>
+    </ng-template>
+</div>
